@@ -12,7 +12,7 @@ var osClient = new oneSignal.Client({
 })
 
 /**
- * 
+ * Initializes the One Signal notification
  * @param {string} title 
  * @param {string} body 
  * @param {object} data 
@@ -43,7 +43,7 @@ function _prepareNotification(title, body, data){
 }
 
 /**
- * 
+ * Completes the sending process of the One Signal notification
  * @param {oneSignal.Notification} notification 
  */
 function _sendNotification(notification){
