@@ -49,8 +49,10 @@ function _prepareNotification(title, body, data){
 function _sendNotification(notification){
   osClient.sendNotification(notification, function(err, response, data){
     if(err){
-      return console.error(err);
+      console.error(err);
+      return 500;
     }
+    return response.statusCode;
   })
 }
 
@@ -59,7 +61,8 @@ router.post('/', function(req, res) {
   let { targets, title, body, data } = req.body;
   let osNotification = _prepareNotification(title, body, data);
   osNotification.setTargetDevices(targets)
-  _sendNotification(osNotification)
+  let responseCode = _sendNotification(osNotification)
+  res.sendStatus(responseCode)
 });
 
 /* Broadcast Message */
@@ -67,7 +70,8 @@ router.post('/broadcast', function(req, res){
   let { title, body, data } = req.body;
   let osNotification = _prepareNotification(title, body, data);
   osNotification.setIncludedSegments(['All']);
-  _sendNotification(osNotification)
+  let responseCode = _sendNotification(osNotification)
+  res.sendStatus(responseCode)
 })
 
 router.post('/topic', function(req, res){
@@ -76,7 +80,8 @@ router.post('/topic', function(req, res){
   osNotification.setFilters([
     { field: 'tag', key: 'topic', relation: 'is', value: topic }
   ])
-  _sendNotification(osNotification)
+  let responseCode = _sendNotification(osNotification)
+  res.sendStatus(responseCode)
 })
 
 module.exports = router;
